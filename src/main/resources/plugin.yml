@@ -1,0 +1,15 @@
+name: BattlepassPlusPlus
+main: dev.xalphabet.privatebattlepass.PrivateBattlepass
+description: Best Battlepass plugin out there with the "++" experience!
+version: 1.0
+api-version: 1.20
+author: xAlphabet_
+depend: [PlaceholderAPI]
+
+commands:
+  battlepass:
+    description: Opens the battlepass menu.
+    usage: /battlepass [page]
+  addreward:
+    description: Adds a reward to the battlepass.
+    usage: /addreward <page> <rewardName> <material> <slot> <displayName> <lore> <leftClickCommand> <rightClickCommand> [<requirementKey1> <requirementValue1> ...]

@@ -1,0 +1,2 @@
+maxMenus: 10 #Default Max Menus
+baseDirectory: /home/container/plugins/PrivateBattlepass/pages #DONT EDIT UNLESS YOU KNOW WHAT YOUR DOING!
