@@ -1,19 +1,23 @@
 package dev.xalphabet.privatebattlepass;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
 public class BattlepassCommands implements CommandExecutor {
     private final BattlepassSystem battlepassSystem;
+    private final PrivateBattlepass plugin;
 
-    public BattlepassCommands(BattlepassSystem battlepassSystem) {
+    public BattlepassCommands(BattlepassSystem battlepassSystem, PrivateBattlepass plugin) {
         this.battlepassSystem = battlepassSystem;
+        this.plugin = plugin;
     }
 
     @Override
@@ -132,5 +136,28 @@ public class BattlepassCommands implements CommandExecutor {
             }
         }
         return requirements;
+    }
+
+    private boolean checkRequirements(Player player, Map<String, Integer> requirements) {
+        for (Map.Entry<String, Integer> requirement : requirements.entrySet()) {
+            String placeholder = requirement.getKey();
+            int requiredValue = requirement.getValue();
+
+            String actualValueString = PlaceholderAPI.setPlaceholders(player, "%" + placeholder + "%");
+            int actualValue;
+            try {
+                actualValue = Integer.parseInt(actualValueString);
+            } catch (NumberFormatException e) {
+                actualValue = 0;
+            }
+
+            plugin.getLogger().info("Checking requirement: " + placeholder + " required: " + requiredValue + " actual: " + actualValue);
+
+            if (actualValue < requiredValue) {
+                plugin.getLogger().info(player.getName() + " did not meet the requirements for " + placeholder);
+                return false;
+            }
+        }
+        return true;
     }
 }

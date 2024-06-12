@@ -23,7 +23,7 @@ public class PrivateBattlepass extends JavaPlugin {
         battlepassSystem = new BattlepassSystem(this, baseDirectory, maxMenus, logger);
 
         // Register commands
-        BattlepassCommands battlepassCommands = new BattlepassCommands(battlepassSystem);
+        BattlepassCommands battlepassCommands = new BattlepassCommands(battlepassSystem, this);
         getCommand("battlepass").setExecutor(battlepassCommands);
         getCommand("addreward").setExecutor(battlepassCommands);
 
