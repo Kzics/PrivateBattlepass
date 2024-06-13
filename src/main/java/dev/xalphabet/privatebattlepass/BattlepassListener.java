@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class BattlepassListener implements Listener {
+public class     BattlepassListener implements Listener {
     private final BattlepassSystem battlepassSystem;
 
     public BattlepassListener(BattlepassSystem battlepassSystem) {
@@ -51,6 +51,8 @@ public class BattlepassListener implements Listener {
                         int rewardSlot = (int) reward.get("slot");
 
                         if (rewardSlot == slot) {
+                            System.out.println("here");
+                            System.out.println(reward.get("requirements"));
                             if (checkRequirements(player, (Map<String, Integer>) reward.get("requirements"))) {
                                 List<String> commands = (event.isLeftClick()) ? (List<String>) reward.get("leftClickCommands") : (List<String>) reward.get("rightClickCommands");
                                 if (commands != null) {
@@ -65,6 +67,8 @@ public class BattlepassListener implements Listener {
                             break;
                         }
                     }
+                } else {
+                    player.sendMessage(ChatColor.RED + "No rewards found for page: " + page); // Debugging line
                 }
             }
         }
@@ -75,13 +79,15 @@ public class BattlepassListener implements Listener {
             String placeholder = requirement.getKey();
             int requiredValue = requirement.getValue();
 
-            String result = PlaceholderAPI.setPlaceholders(player, "%" + placeholder + "%");
+            String result = PlaceholderAPI.setPlaceholders(player, placeholder);
             try {
                 int actualValue = Integer.parseInt(result);
+                player.sendMessage(ChatColor.GRAY + "Checking requirement: " + placeholder + " required: " + requiredValue + " actual: " + actualValue); // Debugging line
                 if (actualValue < requiredValue) {
                     return false;
                 }
             } catch (NumberFormatException e) {
+                player.sendMessage(ChatColor.RED + "Invalid number format for placeholder: " + placeholder + " with result: " + result); // Debugging line
                 return false;
             }
         }
